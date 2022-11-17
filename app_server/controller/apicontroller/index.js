@@ -12,7 +12,7 @@ function ApiController(app) {
     }
   });
 
-  app.get("/api", function (req, res) {
+  app.get("/", function (req, res) {
     res.send("Hello World");
   });
 }
