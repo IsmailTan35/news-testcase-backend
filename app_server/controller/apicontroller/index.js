@@ -11,6 +11,10 @@ function ApiController(app) {
       console.error(error);
     }
   });
+
+  app.get("/", function (req, res) {
+    res.send("Hello World");
+  });
 }
 
 module.exports = ApiController;
