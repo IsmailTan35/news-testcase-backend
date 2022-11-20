@@ -28,7 +28,7 @@ module.exports = async (req, res) => {
       res.status(401).json("login failed");
     }
   } catch (err) {
-    console.log(err);
+    console.error(err);
 
     res.status(400).json("login failed");
   }

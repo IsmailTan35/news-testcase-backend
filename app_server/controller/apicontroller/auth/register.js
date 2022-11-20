@@ -3,7 +3,6 @@ const crypto = require("crypto");
 module.exports = async (req, res) => {
   try {
     let data = req.body;
-    console.log(data);
     if (Object.values(data).length < 3)
       return res.status(400).send({ error: "no data" });
 

@@ -1,19 +1,20 @@
-const formidable = require("../../../helper/helperFormidable");
+const formidable = require("formidable");
 const adminSchema = require("../../../schema/admin.schema");
 const _newsSchema = require("../../../schema/news.schema");
+const _newsSchema2 = require("../../../schema/news.schema");
+
+const path = require("path");
+const fs = require("fs");
 
 module.exports = async (req, res) => {
   try {
     const token = req.headers.authorization;
-    const form = formidable({ multiples: true });
+    const form = new formidable.IncomingForm();
+
     form.parse(req, async (err, fields, files) => {
       if (err) return res.status(500).json({ error: "server not found" });
-      console.log(0);
-
       const { title, content } = fields;
-      console.log(title, content);
       if (!title || !content || !token) return res.status(400).json("18");
-
       const user = await adminSchema.aggregate([
         {
           $match: {
@@ -23,18 +24,17 @@ module.exports = async (req, res) => {
       ]);
 
       if (user.length == 0) return res.sendStatus(401);
-      console.log(1);
 
       const newsSchema = new _newsSchema({
         title: title,
         content: content,
       });
-      console.log(2);
+
       if (files && files.newsPicture && files.newsPicture.filepath) {
         try {
           let oldPath = files.newsPicture.filepath;
           let newFileName = `${newsSchema._id.toString()}.png`;
-          let rawPath = `app_server/uploads/server`;
+          let rawPath = `app_server/uploads/newsPicture`;
           let newPath = path.join(path.resolve(), rawPath, newFileName);
           let rawData = fs.readFileSync(oldPath);
           const res = await fs.writeFile(newPath, rawData, () => {});
@@ -45,18 +45,11 @@ module.exports = async (req, res) => {
         }
       }
 
-      await newsSchema.save(err => {
-        if (!err) return;
-        console.err(err);
-      });
+      const ress = await newsSchema.save();
+      const resArr = await _newsSchema2.find({ new: true });
 
       if (!newsSchema) return res.status(401).json(55);
-
-      res.status(200).json({
-        newsId: newsSchema._id,
-        title: newsSchema.title,
-        newsPicture: newsSchema.newsPicture,
-      });
+      res.status(200).json(resArr);
     });
   } catch (error) {
     console.error(error);

@@ -12,7 +12,6 @@ var newsSchema = new Schema({
   },
   newsPicture: {
     type: String,
-    unique: true,
     require: true,
   },
   timestamps: {
