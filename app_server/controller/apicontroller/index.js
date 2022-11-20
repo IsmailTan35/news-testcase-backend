@@ -30,6 +30,9 @@ function ApiController(app) {
   app.get("/", function (req, res) {
     res.send("İsmail Tan");
   });
+  app.get("/test", function (req, res) {
+    res.send("İsmail Tan2");
+  });
 }
 
 module.exports = ApiController;
