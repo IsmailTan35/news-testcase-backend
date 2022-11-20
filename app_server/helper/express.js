@@ -6,10 +6,10 @@ function Express() {
   const app = express();
 
   app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({ extended: true }));
+  // app.use(bodyParser.urlencoded({ extended: true }));
   app.use(express.json());
   app.use(cors());
-  app.listen(10000, () => console.log("Express Server Started"));
+  // app.listen(10000, () => console.log("Express Server Started"));
 
   return app;
 }

@@ -6,15 +6,11 @@ var newsSchema = new Schema({
     type: String,
     require: true,
   },
-	subtitle:{
-		type: String,
-    require: true,
-	}
   content: {
     type: String,
     require: true,
   },
-  image: {
+  newsPicture: {
     type: String,
     unique: true,
     require: true,

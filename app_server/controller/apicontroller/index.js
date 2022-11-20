@@ -8,6 +8,7 @@ const newsDelete = require("./news/news.delete");
 const newsGet = require("./news/news.get");
 const newsPut = require("./news/news.put");
 const helperVerify = require("../../helper/helperVerify");
+
 function ApiController(app) {
   app.get("/finans", finans);
 
