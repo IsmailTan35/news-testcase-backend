@@ -18,17 +18,22 @@ function ApiController(app) {
   app.post("/auth/register", register);
   app.post("/auth/check", helperVerify);
   app.post("/auth/check/jwt", async (req, res) => {
-    const { token } = req.body;
+    const token = req.headers.authorization;
     try {
       const user = await adminSchema.findOne({ token: { $in: [token] } });
-      res.json(user);
+      if (!user) return res.status(404).json({});
+      res.status(200).json({
+        email: user.email,
+        fullname: user.fullname,
+        token: token,
+      });
     } catch (error) {}
   });
   app.get("/allnews", newsGet);
   app.get("/news:id", newsGet);
-  app.post("/news", newsCreate);
-  app.put("/news", newsPut);
-  app.delete("/news", newsDelete);
+  app.post("/news", helperVerify, newsCreate);
+  app.put("/news", helperVerify, newsPut);
+  app.delete("/news", helperVerify, newsDelete);
 
   app.get("/newspicture/:filename", (req, res) => {
     let rawPath = `app_server/uploads/newsPicture`;
